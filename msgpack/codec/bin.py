@@ -48,7 +48,6 @@ class Encoder:
             raise BinOutOfRange(length)
 
         self.payload = self.get_header(length) + struct.pack(f"{length}s", value)
-        # not completed
 
     def get_payload(self) -> bytes:
         return self.payload

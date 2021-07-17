@@ -8,6 +8,8 @@ from .float import Encoder as float_encoder
 from .bool import Encoder as bool_encoder
 from .nil import Encoder as nil_encoder
 from .array import Encoder as array_encoder
+from .ext import Encoder as ext_encoder
+from .ext import ExtStruct
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +42,9 @@ class Encoder:
             encoder.encode(data)
         elif isinstance(data, float):
             encoder = float_encoder()
+            encoder.encode(data)
+        elif isinstance(data, ExtStruct):
+            encoder = ext_encoder()
             encoder.encode(data)
         elif isinstance(data, list):
             encoder = array_encoder()

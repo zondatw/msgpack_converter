@@ -4,6 +4,7 @@ setup_log("msgpack")
 from typing import List
 
 from msgpack.codec import encoder
+from msgpack.codec.ext import ExtStruct
 
 def convert_bytes_to_hex_list(data: bytes) -> List:
     hex_list = []
@@ -23,7 +24,8 @@ original_data = {
     "dict": {
         "test": "test",
         "test2": 2
-    }
+    },
+    "ext": ExtStruct(1, b"test"),
 }
 
 result = encoder(original_data)

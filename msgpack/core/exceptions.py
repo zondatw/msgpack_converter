@@ -2,6 +2,7 @@ from .limitations import (
     MAX_MAP_KV_NUM, MAX_STR_OBJ_SIZE, MAX_BIN_OBJ_LEN,
     MIN_INT_OBJ_VALUE, MAX_INT_OBJ_VALUE,
     MAX_ARRAY_ELEM_NUM,
+    MIN_EXT_TYPE, MAX_EXT_TYPE, MIN_EXT_DATA_LEN, MAX_EXT_DATA_LEN,
 )
 
 class OutOfRange(Exception):
@@ -46,3 +47,19 @@ class IntOutOfRange(OutOfRange):
 
     def __str__(self):
         return f"Current {self.value} not in {MIN_INT_OBJ_VALUE} ~ {MAX_INT_OBJ_VALUE}"
+
+
+class ExtTypeOutOfRange(OutOfRange):
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return f"Current extension type value {self.value} not in {MIN_EXT_TYPE} ~ {MAX_EXT_TYPE}"
+
+
+class ExtDataOutOfRange(OutOfRange):
+    def __init__(self, length):
+        self.length = length
+
+    def __str__(self):
+        return f"Current extension length {self.length} not in {MIN_EXT_DATA_LEN} ~ {MAX_EXT_DATA_LEN}"
