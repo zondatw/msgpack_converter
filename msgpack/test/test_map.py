@@ -2,14 +2,14 @@ import pytest
 import struct
 
 from msgpack.core.limitations import MAX_MAP_KV_NUM
-from msgpack.codec.map import Encoder as map_encoder
+from msgpack.codec.map import Encoder as MapEncoder
 from msgpack.core.exceptions import MapOutOfRange
 
 
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = map_encoder()
+        cls.encoder = MapEncoder()
 
     def test_fixmap(self):
         base = int("10000000", 2)

@@ -1,12 +1,12 @@
 import pytest
 import struct
 
-from msgpack.codec.float import Encoder as float_encoder
+from msgpack.codec.float import Encoder as FloatEncoder
 
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = float_encoder()
+        cls.encoder = FloatEncoder()
 
     def test_32(self):
         # Min

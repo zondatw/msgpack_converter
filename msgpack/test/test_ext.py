@@ -3,7 +3,7 @@ import struct
 
 
 from msgpack.core.limitations import MIN_EXT_TYPE, MAX_EXT_TYPE, MIN_EXT_DATA_LEN, MAX_EXT_DATA_LEN
-from msgpack.codec.ext import Encoder as ext_encoder
+from msgpack.codec.ext import Encoder as ExtEncoder
 from msgpack.codec.ext import ExtStruct
 from msgpack.core.exceptions import ExtTypeOutOfRange, ExtDataOutOfRange
 
@@ -27,7 +27,7 @@ class TestStruct:
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = ext_encoder()
+        cls.encoder = ExtEncoder()
 
     def test_fixext_1(self):
         test_ext = ExtStruct(1, b"\x11")

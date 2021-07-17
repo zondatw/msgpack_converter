@@ -2,13 +2,13 @@ import pytest
 import struct
 
 from msgpack.core.limitations import MAX_STR_OBJ_SIZE
-from msgpack.codec.str import Encoder as str_encoder
+from msgpack.codec.str import Encoder as StrEncoder
 from msgpack.core.exceptions import StrOutOfRange
 
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = str_encoder()
+        cls.encoder = StrEncoder()
 
     def test_fixstr(self):
         base = int("10100000", 2)

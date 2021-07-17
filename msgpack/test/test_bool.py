@@ -1,11 +1,11 @@
 import struct
 
-from msgpack.codec.bool import Encoder as bool_encoder
+from msgpack.codec.bool import Encoder as BoolEncoder
 
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = bool_encoder()
+        cls.encoder = BoolEncoder()
 
     def test_true(self):
         self.encoder.encode(True)

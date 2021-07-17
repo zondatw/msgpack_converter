@@ -2,14 +2,14 @@ import pytest
 import struct
 
 from msgpack.core.limitations import MAX_ARRAY_ELEM_NUM
-from msgpack.codec.array import Encoder as array_encoder
+from msgpack.codec.array import Encoder as ArrayEncoder
 from msgpack.core.exceptions import ArrayOutOfRange
 
 
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = array_encoder()
+        cls.encoder = ArrayEncoder()
 
     def test_fixarray(self):
         base = int("10010000", 2)

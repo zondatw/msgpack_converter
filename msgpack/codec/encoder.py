@@ -1,14 +1,14 @@
 import logging
 
-from .map import Encoder as map_encoder
-from .bin import Encoder as bin_encoder
-from .str import Encoder as str_encoder
-from .int import Encoder as int_encoder
-from .float import Encoder as float_encoder
-from .bool import Encoder as bool_encoder
-from .nil import Encoder as nil_encoder
-from .array import Encoder as array_encoder
-from .ext import Encoder as ext_encoder
+from .map import Encoder as MapEncoder
+from .bin import Encoder as BinEncoder
+from .str import Encoder as StrEncoder
+from .int import Encoder as IntEncoder
+from .float import Encoder as FloatEncoder
+from .bool import Encoder as BoolEncoder
+from .nil import Encoder as NilEncoder
+from .array import Encoder as ArrayEncoder
+from .ext import Encoder as ExtEncoder
 from .ext import ExtStruct
 
 logger = logging.getLogger(__name__)
@@ -26,28 +26,28 @@ class Encoder:
         logger.debug(f"Get data({type(data)}): {data}")
         encoder = None
         if data == None:
-            encoder = nil_encoder()
+            encoder = NilEncoder()
             encoder.encode(data)
         elif isinstance(data, bool):
-            encoder = bool_encoder()
+            encoder = BoolEncoder()
             encoder.encode(data)
         elif isinstance(data, str):
-            encoder = str_encoder()
+            encoder = StrEncoder()
             encoder.encode(data)
         elif isinstance(data, bytes):
-            encoder = bin_encoder()
+            encoder = BinEncoder()
             encoder.encode(data)
         elif isinstance(data, int):
-            encoder = int_encoder()
+            encoder = IntEncoder()
             encoder.encode(data)
         elif isinstance(data, float):
-            encoder = float_encoder()
+            encoder = FloatEncoder()
             encoder.encode(data)
         elif isinstance(data, ExtStruct):
-            encoder = ext_encoder()
+            encoder = ExtEncoder()
             encoder.encode(data)
         elif isinstance(data, list):
-            encoder = array_encoder()
+            encoder = ArrayEncoder()
             encoder_gen = encoder.encode(data)
             for item in encoder_gen:
                 logger.debug(f"Array: Check item: {item}")
@@ -55,7 +55,7 @@ class Encoder:
                 logger.debug(f"Array: Check ret_payload: {ret_payload}")
                 encoder_gen.send(ret_payload)
         elif isinstance(data, dict):
-            encoder = map_encoder()
+            encoder = MapEncoder()
             encoder_gen = encoder.encode(data)
 
             for key, value in encoder_gen:

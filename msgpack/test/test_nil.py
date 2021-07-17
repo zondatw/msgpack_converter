@@ -1,11 +1,11 @@
 import struct
 
-from msgpack.codec.nil import Encoder as nil_encoder
+from msgpack.codec.nil import Encoder as NilEncoder
 
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = nil_encoder()
+        cls.encoder = NilEncoder()
 
     def test_result(self):
         self.encoder.encode(None)

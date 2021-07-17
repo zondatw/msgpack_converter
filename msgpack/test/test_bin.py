@@ -2,13 +2,13 @@ import pytest
 import struct
 
 from msgpack.core.limitations import MAX_BIN_OBJ_LEN
-from msgpack.codec.bin import Encoder as bin_encoder
+from msgpack.codec.bin import Encoder as BinEncoder
 from msgpack.core.exceptions import BinOutOfRange
 
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = bin_encoder()
+        cls.encoder = BinEncoder()
 
     def test_8(self):
         # Min

@@ -1,12 +1,12 @@
 import pytest
 import struct
 
-from msgpack.codec.int import Encoder as int_encoder
+from msgpack.codec.int import Encoder as IntEncoder
 
 class TestEncode:
     @classmethod
     def setup_class(cls):
-        cls.encoder = int_encoder()
+        cls.encoder = IntEncoder()
 
     def test_fixint_positive(self):
         # Min
