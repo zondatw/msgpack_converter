@@ -2,9 +2,11 @@ from config.settings import setup_log
 setup_log("msgpack")
 
 from typing import List
+from datetime import datetime
 
 from msgpack.codec import encoder
 from msgpack.codec.ext import ExtStruct
+from msgpack.codec.timestamp import TimestampStruct
 
 def convert_bytes_to_hex_list(data: bytes) -> List:
     hex_list = []
@@ -27,9 +29,11 @@ original_data = {
         "test2": 2
     },
     "ext": ExtStruct(1, b"test"),
+    "timestamp": TimestampStruct(datetime.strptime("2021/07/17 22:30:45.123456", "%Y/%m/%d %H:%M:%S.%f"))
 }
 
 encoded_data = encoder(original_data)
 
+print(f"Length: {len(encoded_data)}")
 print(encoded_data)
 print(" ".join(convert_bytes_to_hex_list(encoded_data)))
