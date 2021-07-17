@@ -34,7 +34,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BB", 0xd4, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">Bb", 0xd4, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     def test_fixext_2(self):
@@ -42,7 +42,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BB", 0xd5, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">Bb", 0xd5, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     def test_fixext_4(self):
@@ -50,7 +50,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BB", 0xd6, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">Bb", 0xd6, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     def test_fixext_8(self):
@@ -58,7 +58,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BB", 0xd7, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">Bb", 0xd7, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     def test_fixext_16(self):
@@ -66,7 +66,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BB", 0xd8, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">Bb", 0xd8, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     def test_ext_8(self):
@@ -75,7 +75,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BBB", 0xc7, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BBb", 0xc7, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
         # Max
@@ -83,7 +83,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BBB", 0xc7, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BBb", 0xc7, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     def test_ext_16(self):
@@ -92,7 +92,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BIB", 0xc8, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BIb", 0xc8, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
         # Max
@@ -100,7 +100,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BIB", 0xc8, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BIb", 0xc8, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     def test_ext_32_min(self):
@@ -109,7 +109,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BLB", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BLb", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     @pytest.mark.slow
@@ -119,5 +119,5 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BLB", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BLb", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )

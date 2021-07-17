@@ -82,21 +82,21 @@ class Encoder:
 
     def get_header(self, length: int, type: int) -> bytes:
         if length == 1:
-            return struct.pack(">BB", 0xd4, type)
+            return struct.pack(">Bb", 0xd4, type)
         elif length == 2:
-            return struct.pack(">BB", 0xd5, type)
+            return struct.pack(">Bb", 0xd5, type)
         elif length == 4:
-            return struct.pack(">BB", 0xd6, type)
+            return struct.pack(">Bb", 0xd6, type)
         elif length == 8:
-            return struct.pack(">BB", 0xd7, type)
+            return struct.pack(">Bb", 0xd7, type)
         elif length == 16:
-            return struct.pack(">BB", 0xd8, type)
+            return struct.pack(">Bb", 0xd8, type)
         elif length <= ((2 ** 8) - 1):
-            return struct.pack(">BBB", 0xc7, length, type)
+            return struct.pack(">BBb", 0xc7, length, type)
         elif length <= ((2 ** 16) - 1):
-            return struct.pack(">BIB", 0xc8, length, type)
+            return struct.pack(">BIb", 0xc8, length, type)
         elif length <= ((2 ** 32) - 1):
-            return struct.pack(">BLB", 0xc9, length, type)
+            return struct.pack(">BLb", 0xc9, length, type)
 
     def encode(self, ext_struct: ExtStruct):
         length = len(ext_struct.data)
