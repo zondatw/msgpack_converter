@@ -16,6 +16,7 @@ def convert_bytes_to_hex_list(data: bytes) -> List:
 
 original_data = {
     "str": "1",
+    "byte": b"test",
     "float": 1.1,
     "int": -1,
     "None": None,
