@@ -40,6 +40,10 @@ b'\x8a\xa3str\xa11\xa4byte\xc4\x04test\xa5float\xca?\x8c\xcc\xcd\xa3int\xff\xa4N
 # example: id = 1, data = b"test
 # define
 ExtStruct(1, b"test")
+
+# 2021/07/17 22:30:45.123456
+# Must be datetime
+TimestampStruct(datetime.strptime("2021/07/17 22:30:45.123456", "%Y/%m/%d %H:%M:%S.%f"))
 ```
 
 ## Test
