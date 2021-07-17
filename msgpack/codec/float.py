@@ -31,7 +31,7 @@ class Encoder:
         else: # Include NaN and Infinity
             return struct.pack(">B", 0xcb)
 
-    def get_value(self, value: float):
+    def get_value(self, value: float) -> bytes:
         if 1.2E-38 <= value <= 3.4E+38:
             return struct.pack(">f", value)
         else: # Include NaN and Infinity

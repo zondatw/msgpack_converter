@@ -29,7 +29,7 @@ original_data = {
     "ext": ExtStruct(1, b"test"),
 }
 
-result = encoder(original_data)
+encoded_data = encoder(original_data)
 
-print(result)
-print(" ".join(convert_bytes_to_hex_list(result)))
+print(encoded_data)
+print(" ".join(convert_bytes_to_hex_list(encoded_data)))
