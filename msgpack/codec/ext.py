@@ -177,6 +177,11 @@ class Decoder:
     * type is a signed 8-bit signed integer
     * type < 0 is reserved for future extension including 2-byte type information
     """
+    decode_map = {}
+
+    @staticmethod
+    def register_ext(type: int, ext_struct: ExtStruct):
+        Decoder.decode_map[type] = ext_struct
 
     def __init__(self):
         self.elem = None
@@ -209,7 +214,10 @@ class Decoder:
         self.elem = None
         length, type = self.get_length_and_type(first_byte, payload)
 
-        self.elem = ExtStruct(type, payload.bytes(length))
+        if type in self.decode_map:
+            self.elem = self.decode_map[type](payload.bytes(length))
+        else:
+            self.elem = ExtStruct(type, payload.bytes(length))
 
     def get_elem(self) -> ExtStruct:
         return self.elem

@@ -137,8 +137,7 @@ class TestEncode:
         payload = Payload(self.encoder.get_payload().strip())
         first_byte = struct.unpack(">B", payload.byte())[0]
         self.decoder.decode(first_byte, payload)
-        assert self.decoder.get_elem().type == test_ext.type
-        assert self.decoder.get_elem().data == test_ext.data
+        assert self.decoder.get_elem() == test_ext
 
     def test_fixext_1(self):
         test_ext = ExtStruct(1, b"\x11")

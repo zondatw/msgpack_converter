@@ -2,6 +2,7 @@ import logging
 import struct
 
 from msgpack.core.base import Payload
+import msgpack.codec.timestamp as ext_timestamp
 
 from .nil import Decoder as NilDecoder
 from .bool import Decoder as BoolDecoder
@@ -14,6 +15,9 @@ from .int import Decoder as IntDecoder
 from .ext import Decoder as ExtDecoder
 
 logger = logging.getLogger(__name__)
+
+# Register extionsion decoder
+ExtDecoder.register_ext(ext_timestamp.TYPE, ext_timestamp.decode_struct)
 
 class Decoder:
     def __init__(self):
