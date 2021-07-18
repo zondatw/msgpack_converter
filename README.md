@@ -137,15 +137,23 @@ with io.open("./example.msgpack.json", "w", encoding="utf-8") as f:
 
 Install dependency, two ways:  
 
-* pip: `pip install pytest`  
+* pip: `pip install pytest pytest-cov`  
 * poetry: `poetry install`  
 
 ### Quick test
 
 `$ pytest .`  
 
+coverage test:
+
+`pytest --cov-config=.coveragerc --cov=. .`
+
 ### Slow test
 
 > include large element test
 
 `$ pytest --runslow`  
+
+coverage test:
+
+`pytest --cov-config=.coveragerc --cov=. --runslow`

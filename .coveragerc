@@ -1,0 +1,7 @@
+[run]
+omit =
+    */__init__.py
+    */migrations/*
+    config/*
+    conftest.py
+    main.py
