@@ -63,9 +63,9 @@ decoded_data = decoder(encoded_data)
 # Define
 ExtStruct(1, b"test")
 
-# 2021/07/17 22:30:45.123456
+# 2021/07/17 22:30:45.123456+00:00
 # Must be datetime
-TimestampStruct(datetime.strptime("2021/07/17 22:30:45.123456", "%Y/%m/%d %H:%M:%S.%f"))
+TimestampStruct(datetime.strptime("2021/07/17 22:30:45.123456+00:00", "%Y/%m/%d %H:%M:%S.%f%z"))
 ```
 
 ### File
