@@ -16,10 +16,10 @@ logger = logging.getLogger(__name__)
 
 class Encoder:
     def __init__(self):
-        logger.info("Encoder")
+        logger.debug("Encoder")
 
     def encode(self, json_data):
-        logger.info(f"Ready to encode: {json_data}")
+        logger.debug(f"Ready to encode: {json_data}")
         return self._encode(json_data)
 
     def _encode(self, data):

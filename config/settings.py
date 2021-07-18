@@ -1,9 +1,9 @@
 import logging
 
-def setup_log(project_name):
+def setup_log(project_name: str, Debug: bool):
     logger = logging.getLogger(project_name)
     logger.propagate = True
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.DEBUG if Debug else logging.INFO)
 
     # create console handler and set level to debug
     console = logging.StreamHandler()

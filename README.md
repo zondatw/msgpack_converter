@@ -1,5 +1,9 @@
 # MessagePack converter
 
+## Quick start
+
+`python main.py`  
+
 ## Example
 
 ### Python Dictionary
@@ -7,7 +11,7 @@
 ```python
 from datetime import datetime
 
-from msgpack.codec import encoder
+from msgpack.codec import encoder, decoder
 from msgpack.codec.ext import ExtStruct
 from msgpack.codec.timestamp import TimestampStruct
 
@@ -24,23 +28,39 @@ original_data = {
         "test2": 2
     },
     "ext": ExtStruct(1, b"test"),
-    "timestamp": TimestampStruct(datetime.strptime("2021/07/17 22:30:45.123456", "%Y/%m/%d %H:%M:%S.%f")),
+    "timestamp": TimestampStruct(datetime.strptime("2021/07/17 22:30:45.123456+00:00", "%Y/%m/%d %H:%M:%S.%f%z")),
 }
 
+# Pass data to encoder function
 encoded_data = encoder(original_data)
 
 """
 Length: 113
-b'\x8a\xa3str\xa6\xe6\xb8\xac\xe8\xa9\xa6\xa4byte\xc4\x04test\xa5float\xca?\x8c\xcc\xcd\xa3int\xff\xa4None\xc0\xa4bool\xc2\xa5array\x92\xc3\xc3\xa4dict\x82\xa4test\xa4test\xa5test2\x02\xa3ext\xd6\x01test\xa9timestamp\xd7\xff\x1do(\x00`\xf2\xe9\x95'
-8a a3 73 74 72 a6 e6 b8 ac e8 a9 a6 a4 62 79 74 65 c4 04 74 65 73 74 a5 66 6c 6f 61 74 ca 3f 8c cc cd a3 69 6e 74 ff a4 4e 6f 6e 65 c0 a4 62 6f 6f 6c c2 a5 61 72 72 61 79 92 c3 c3 a4 64 69 63 74 82 a4 74 65 73 74 a4 74 65 73 74 a5 74 65 73 74 32 02 a3 65 78 74 d6 01 74 65 73 74 a9 74 69 6d 65 73 74 61 6d 70 d7 ff 1d 6f 28 00 60 f2 e9 95
+b'\x8a\xa3str\xa6\xe6\xb8\xac\xe8\xa9\xa6\xa4byte\xc4\x04test\xa5float\xca?\x8c\xcc\xcd\xa3int\xff\xa4None\xc0\xa4bool\xc2\xa5array\x92\xc3\xc3\xa4dict\x82\xa4test\xa4test\xa5test2\x02\xa3ext\xd6\x01test\xa9timestamp\xd7\xff\x1do(\x00`\xf3Z\x15'
+8a a3 73 74 72 a6 e6 b8 ac e8 a9 a6 a4 62 79 74 65 c4 04 74 65 73 74 a5 66 6c 6f 61 74 ca 3f 8c cc cd a3 69 6e 74 ff a4 4e 6f 6e 65 c0 a4 62 6f 6f 6c c2 a5 61 72 72 61 79 92 c3 c3 a4 64 69 63 74 82 a4 74 65 73 74 a4 74 65 73 74 a5 74 65 73 74 32 02 a3 65 78 74 d6 01 74 65 73 74 a9 74 69 6d 65 73 74 61 6d 70 d7 ff 1d 6f 28 00 60 f3 5a 15
+"""
+
+# Pass encoded data to decoder function
+decoded_data = decoder(encoded_data)
+""""
+{'None': None,
+ 'array': [True, True],
+ 'bool': False,
+ 'byte': b'test',
+ 'dict': {'test': 'test', 'test2': 2},
+ 'ext': dGVzdA==,
+ 'float': 1.100000023841858,
+ 'int': -1,
+ 'str': '測試',
+ 'timestamp': 2021/07/17 22:30:45.123456+0000}
 """
 ```
 
 #### ExtStruct
 
 ```python
-# example: type = 1, data = b"test
-# define
+# Example: type = 1, data = b"test
+# Define
 ExtStruct(1, b"test")
 
 # 2021/07/17 22:30:45.123456
@@ -68,33 +88,63 @@ example.json
 ```
 
 ```python
+import io
+import json
+
+from msgpack.codec import encoder, decoder
+
+# Read json file and json unmarshal
 original_data = {}
-with open("./example.json", "r") as f:
+with io.open(file_path, "r", encoding="utf-8") as f:
     content = f.read()
     original_data = json.loads(content)
 
+# Pass data to encoder function
 encoded_data = encoder(original_data)
-
-print(f"Length: {len(encoded_data)}")
-print(encoded_data)
-print(" ".join(convert_bytes_to_hex_list(encoded_data)))
 
 with open("./example.msgpack", "wb") as f:
     f.write(encoded_data)
 """
-Length: 75
-b'\x87\xa3str\xa9\xe7\x9a\x9c\xe7\xa5\x88\xe5\xb2\xab\xa5float\xca?\x8c\xcc\xcd\xa3int\xff\xa4None\xc0\xa4bool\xc2\xa5array\x92\xc3\xc3\xa4dict\x82\xa4test\xa4test\xa5test2\x02'
-87 a3 73 74 72 a9 e7 9a 9c e7 a5 88 e5 b2 ab a5 66 6c 6f 61 74 ca 3f 8c cc cd a3 69 6e 74 ff a4 4e 6f 6e 65 c0 a4 62 6f 6f 6c c2 a5 61 72 72 61 79 92 c3 c3 a4 64 69 63 74 82 a4 74 65 73 74 a4 74 65 73 74 a5 74 65 73 74 32 02
+87 a3 73 74 72 a6 e6 b8 ac e8 a9 a6 a5 66 6c 6f 61 74 ca 3f 8c cc cd a3 69 6e 74 ff a4 4e 6f 6e 65 c0 a4 62 6f 6f 6c c2 a5 61 72 72 61 79 92 c3 c3 a4 64 69 63 74 82 a4 74 65 73 74 a4 74 65 73 74 a5 74 65 73 74 32 02
+"""
+
+# Read binary data
+encoded_data = B""
+with open("./example.msgpack", "rb") as f:
+    encoded_data = f.read()
+
+# Pass encoded data to decoder function
+decoded_data = decoder(encoded_data)
+
+# json marshal and store to file
+with io.open("./example.msgpack.json", "w", encoding="utf-8") as f:
+    json.dump(decoded_data, f, ensure_ascii=False)
+
+"""
+{'None': None,
+ 'array': [True, True],
+ 'bool': False,
+ 'dict': {'test': 'test', 'test2': 2},
+ 'float': 1.100000023841858,
+ 'int': -1,
+ 'str': '測試'}
 """
 ```
 
 ## Test
 
-### Quick
+### Prerequisite
+
+Install dependency, two ways:  
+
+* pip: `pip install pytest`  
+* poetry: `poetry install`  
+
+### Quick test
 
 `$ pytest .`  
 
-### Slow
+### Slow test
 
 > include large element test
 

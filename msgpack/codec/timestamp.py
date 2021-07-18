@@ -45,6 +45,9 @@ class TimestampStruct(ExtStruct):
         super().__init__(TYPE, data)
         self.custom_attribute_list.extend(["datetime", "seconds", "nanosec"])
 
+    def __repr__(self) -> str:
+        return self.datetime.strftime("%Y/%m/%d %H:%M:%S.%f%z")
+
 
 def decode_struct(data: bytes):
     return TimestampStruct(data=data, isEncodeMode=False)

@@ -21,10 +21,10 @@ ExtDecoder.register_ext(ext_timestamp.TYPE, ext_timestamp.decode_struct)
 
 class Decoder:
     def __init__(self):
-        logger.info("Decoder")
+        logger.debug("Decoder")
 
     def decode(self, original_payload: bytes):
-        logger.info(f"Ready to decode: {original_payload}")
+        logger.debug(f"Ready to decode: {original_payload}")
         payload = Payload(original_payload.strip())
         return self._decode(payload)
 

@@ -1,4 +1,5 @@
 import struct
+import base64
 from typing import Tuple
 
 from msgpack.core.base import Payload
@@ -25,6 +26,9 @@ class ExtStruct:
             getattr(self, attribute_name) == getattr(other, attribute_name)
             for attribute_name in self.custom_attribute_list
         )
+
+    def __repr__(self) -> str:
+        return base64.b64encode(self.data).decode()
 
 
 class Encoder:
