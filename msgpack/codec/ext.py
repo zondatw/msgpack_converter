@@ -94,9 +94,9 @@ class Encoder:
         elif length <= ((2 ** 8) - 1):
             return struct.pack(">BBb", 0xc7, length, type)
         elif length <= ((2 ** 16) - 1):
-            return struct.pack(">BIb", 0xc8, length, type)
+            return struct.pack(">BHb", 0xc8, length, type)
         elif length <= ((2 ** 32) - 1):
-            return struct.pack(">BLb", 0xc9, length, type)
+            return struct.pack(">BIb", 0xc9, length, type)
 
     def encode(self, ext_struct: ExtStruct):
         length = len(ext_struct.data)

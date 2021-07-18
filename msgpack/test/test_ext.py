@@ -92,7 +92,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BIb", 0xc8, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BHb", 0xc8, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
         # Max
@@ -100,7 +100,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BIb", 0xc8, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BHb", 0xc8, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     def test_ext_32_min(self):
@@ -109,7 +109,7 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BLb", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BIb", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
 
     @pytest.mark.slow
@@ -119,5 +119,5 @@ class TestEncode:
         self.encoder.encode(test_ext)
         length = len(test_ext.data)
         assert self.encoder.get_payload() == (
-            struct.pack(">BLb", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
+            struct.pack(">BIb", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
