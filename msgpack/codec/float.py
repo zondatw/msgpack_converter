@@ -1,5 +1,7 @@
 import struct
 
+from msgpack.core.base import Payload
+
 class Encoder:
     """Float Encoder
     
@@ -42,3 +44,38 @@ class Encoder:
 
     def get_payload(self) -> bytes:
         return self.payload
+
+class Decoder:
+    """Float Decoder
+    
+    Float format family stores a floating point number in 5 bytes or 9 bytes.
+
+    float 32 stores a floating point number in IEEE 754 single precision floating point number format:
+    +--------+--------+--------+--------+--------+
+    |  0xca  |XXXXXXXX|XXXXXXXX|XXXXXXXX|XXXXXXXX|
+    +--------+--------+--------+--------+--------+
+
+    float 64 stores a floating point number in IEEE 754 double precision floating point number format:
+    +--------+--------+--------+--------+--------+--------+--------+--------+--------+
+    |  0xcb  |YYYYYYYY|YYYYYYYY|YYYYYYYY|YYYYYYYY|YYYYYYYY|YYYYYYYY|YYYYYYYY|YYYYYYYY|
+    +--------+--------+--------+--------+--------+--------+--------+--------+--------+
+
+    where
+    * XXXXXXXX_XXXXXXXX_XXXXXXXX_XXXXXXXX is a big-endian IEEE 754 single precision floating point number.
+    Extension of precision from single-precision to double-precision does not lose precision.
+    * YYYYYYYY_YYYYYYYY_YYYYYYYY_YYYYYYYY_YYYYYYYY_YYYYYYYY_YYYYYYYY_YYYYYYYY is a big-endian
+    IEEE 754 double precision floating point number
+    """
+
+    def __init__(self):
+        self.elem = None
+
+    def decode(self, first_byte: bytes, payload: Payload):
+        self.elem = None
+        if first_byte == 0xca:
+            self.elem = struct.unpack(">f", payload.bytes(4))[0]
+        elif first_byte == 0xcb:
+            self.elem = struct.unpack(">d", payload.bytes(8))[0]
+
+    def get_elem(self) -> float:
+        return self.elem

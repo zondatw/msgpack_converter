@@ -1,5 +1,6 @@
-import pytest
 import struct
+
+import pytest
 
 from msgpack.core.limitations import MAX_STR_OBJ_SIZE
 from msgpack.codec.str import Encoder as StrEncoder

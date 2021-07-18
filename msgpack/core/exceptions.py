@@ -63,3 +63,12 @@ class ExtDataOutOfRange(OutOfRange):
 
     def __str__(self):
         return f"Current extension length {self.length} not in {MIN_EXT_DATA_LEN} ~ {MAX_EXT_DATA_LEN}"
+
+
+class PayloadOutOfRange(OutOfRange):
+    def __init__(self, index, payload_length):
+        self.index = index
+        self.payload_length = payload_length
+
+    def __str__(self):
+        return f"current index {self.index} excess the payload length {self.payload_length}"

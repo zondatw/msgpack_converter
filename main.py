@@ -4,8 +4,9 @@ setup_log("msgpack")
 import json
 from typing import List
 from datetime import datetime
+from decimal import Decimal
 
-from msgpack.codec import encoder
+from msgpack.codec import encoder, decoder
 from msgpack.codec.ext import ExtStruct
 from msgpack.codec.timestamp import TimestampStruct
 
@@ -18,7 +19,7 @@ def convert_bytes_to_hex_list(data: bytes) -> List:
 
 def dict_example():
     original_data = {
-        "str": "1",
+        "str": "測試",
         "byte": b"test",
         "float": 1.1,
         "int": -1,
@@ -54,7 +55,29 @@ def file_example(file_path: str, encoded_file_path: str):
     with open(encoded_file_path, "wb") as f:
         f.write(encoded_data)
 
+def decode_example():
+    original_data = {
+        "str": "1",
+        "int": -33,
+        "None": None,
+        "bool": False,
+        "array": [None, False, True, "測試", b"test"],
+        "float": 1.1,
+    }
+
+    encoded_data = encoder(original_data)
+
+    print(f"Length: {len(encoded_data)}")
+    print(encoded_data)
+    print(" ".join(convert_bytes_to_hex_list(encoded_data)))
+
+    decoded_data = decoder(encoded_data)
+
+    print("==== decode ====")
+    print(decoded_data)
+
 
 if __name__ == "__main__":
     dict_example()
     file_example("./example.json", "./example.msgpack")
+    decode_example()

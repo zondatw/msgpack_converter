@@ -1,5 +1,6 @@
-import pytest
 import struct
+
+import pytest
 
 from msgpack.core.limitations import MAX_BIN_OBJ_LEN
 from msgpack.codec.bin import Encoder as BinEncoder

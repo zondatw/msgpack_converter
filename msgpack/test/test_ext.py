@@ -1,9 +1,11 @@
-import pytest
 import struct
 
+import pytest
 
+from msgpack.core.base import Payload
 from msgpack.core.limitations import MIN_EXT_TYPE, MAX_EXT_TYPE, MIN_EXT_DATA_LEN, MAX_EXT_DATA_LEN
 from msgpack.codec.ext import Encoder as ExtEncoder
+from msgpack.codec.ext import Decoder as ExtDecoder
 from msgpack.codec.ext import ExtStruct
 from msgpack.core.exceptions import ExtTypeOutOfRange, ExtDataOutOfRange
 
@@ -121,3 +123,68 @@ class TestEncode:
         assert self.encoder.get_payload() == (
             struct.pack(">BIb", 0xc9, length, test_ext.type) + struct.pack(f"{length}s", test_ext.data)
         )
+
+
+
+class TestEncode:
+    @classmethod
+    def setup_class(cls):
+        cls.encoder = ExtEncoder()
+        cls.decoder = ExtDecoder()
+
+    def compare(self, test_ext: ExtStruct):
+        self.encoder.encode(test_ext)
+        payload = Payload(self.encoder.get_payload().strip())
+        first_byte = struct.unpack(">B", payload.byte())[0]
+        self.decoder.decode(first_byte, payload)
+        assert self.decoder.get_elem().type == test_ext.type
+        assert self.decoder.get_elem().data == test_ext.data
+
+    def test_fixext_1(self):
+        test_ext = ExtStruct(1, b"\x11")
+        self.compare(test_ext)
+
+    def test_fixext_2(self):
+        test_ext = ExtStruct(1, b"\x11\x22")
+        self.compare(test_ext)
+
+    def test_fixext_4(self):
+        test_ext = ExtStruct(1, b"\x11\x22\x33\x44")
+        self.compare(test_ext)
+
+    def test_fixext_8(self):
+        test_ext = ExtStruct(1, b"\x11\x22\x33\x44\x55\x66\x77\x88")
+        self.compare(test_ext)
+
+    def test_fixext_16(self):
+        test_ext = ExtStruct(1, b"\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff\x00")
+        self.compare(test_ext)
+
+    def test_ext_8(self):
+        # Min
+        test_ext = ExtStruct(1, ("1" * 17).encode())
+        self.compare(test_ext)
+
+        # Max
+        test_ext = ExtStruct(1, ("1" * ((2 ** 8) - 1)).encode())
+        self.compare(test_ext)
+
+    def test_ext_16(self):
+        # Min
+        test_ext = ExtStruct(1, ("1" * (2 ** 8)).encode())
+        self.compare(test_ext)
+
+        # Max
+        test_ext = ExtStruct(1, ("1" * ((2 ** 16) - 1)).encode())
+        self.compare(test_ext)
+
+    def test_ext_32_min(self):
+        # Min
+        test_ext = ExtStruct(1, ("1" * (2 ** 16)).encode())
+        self.compare(test_ext)
+
+    @pytest.mark.slow
+    def test_32_max(self):
+        # Max
+        test_ext = ExtStruct(1, ("1" * ((2 ** 32) - 1)).encode())
+        self.compare(test_ext)

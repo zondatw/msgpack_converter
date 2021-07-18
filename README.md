@@ -12,7 +12,7 @@ from msgpack.codec.ext import ExtStruct
 from msgpack.codec.timestamp import TimestampStruct
 
 original_data = {
-    "str": "1",
+    "str": "測試",
     "byte": b"test",
     "float": 1.1,
     "int": -1,
@@ -30,9 +30,9 @@ original_data = {
 encoded_data = encoder(original_data)
 
 """
-Length: 108
-b'\x8a\xa3str\xa11\xa4byte\xc4\x04test\xa5float\xca?\x8c\xcc\xcd\xa3int\xff\xa4None\xc0\xa4bool\xc2\xa5array\x92\xc3\xc3\xa4dict\x82\xa4test\xa4test\xa5test2\x02\xa3ext\xd6\x01test\xa9timestamp\xd7\xff\x1do(\x00`\xf2\xe9\x95'
-8a a3 73 74 72 a1 31 a4 62 79 74 65 c4 04 74 65 73 74 a5 66 6c 6f 61 74 ca 3f 8c cc cd a3 69 6e 74 ff a4 4e 6f 6e 65 c0 a4 62 6f 6f 6c c2 a5 61 72 72 61 79 92 c3 c3 a4 64 69 63 74 82 a4 74 65 73 74 a4 74 65 73 74 a5 74 65 73 74 32 02 a3 65 78 74 d6 01 74 65 73 74 a9 74 69 6d 65 73 74 61 6d 70 d7 ff 1d 6f 28 00 60 f2 e9 95
+Length: 113
+b'\x8a\xa3str\xa6\xe6\xb8\xac\xe8\xa9\xa6\xa4byte\xc4\x04test\xa5float\xca?\x8c\xcc\xcd\xa3int\xff\xa4None\xc0\xa4bool\xc2\xa5array\x92\xc3\xc3\xa4dict\x82\xa4test\xa4test\xa5test2\x02\xa3ext\xd6\x01test\xa9timestamp\xd7\xff\x1do(\x00`\xf2\xe9\x95'
+8a a3 73 74 72 a6 e6 b8 ac e8 a9 a6 a4 62 79 74 65 c4 04 74 65 73 74 a5 66 6c 6f 61 74 ca 3f 8c cc cd a3 69 6e 74 ff a4 4e 6f 6e 65 c0 a4 62 6f 6f 6c c2 a5 61 72 72 61 79 92 c3 c3 a4 64 69 63 74 82 a4 74 65 73 74 a4 74 65 73 74 a5 74 65 73 74 32 02 a3 65 78 74 d6 01 74 65 73 74 a9 74 69 6d 65 73 74 61 6d 70 d7 ff 1d 6f 28 00 60 f2 e9 95
 """
 ```
 
@@ -54,7 +54,7 @@ example.json
 
 ```json
 {
-    "str": "1",
+    "str": "測試",
     "float": 1.1,
     "int": -1,
     "None": null,
@@ -82,9 +82,9 @@ print(" ".join(convert_bytes_to_hex_list(encoded_data)))
 with open("./example.msgpack", "wb") as f:
     f.write(encoded_data)
 """
-Length: 67
-b'\x87\xa3str\xa11\xa5float\xca?\x8c\xcc\xcd\xa3int\xff\xa4None\xc0\xa4bool\xc2\xa5array\x92\xc3\xc3\xa4dict\x82\xa4test\xa4test\xa5test2\x02'
-87 a3 73 74 72 a1 31 a5 66 6c 6f 61 74 ca 3f 8c cc cd a3 69 6e 74 ff a4 4e 6f 6e 65 c0 a4 62 6f 6f 6c c2 a5 61 72 72 61 79 92 c3 c3 a4 64 69 63 74 82 a4 74 65 73 74 a4 74 65 73 74 a5 74 65 73 74 32 02
+Length: 75
+b'\x87\xa3str\xa9\xe7\x9a\x9c\xe7\xa5\x88\xe5\xb2\xab\xa5float\xca?\x8c\xcc\xcd\xa3int\xff\xa4None\xc0\xa4bool\xc2\xa5array\x92\xc3\xc3\xa4dict\x82\xa4test\xa4test\xa5test2\x02'
+87 a3 73 74 72 a9 e7 9a 9c e7 a5 88 e5 b2 ab a5 66 6c 6f 61 74 ca 3f 8c cc cd a3 69 6e 74 ff a4 4e 6f 6e 65 c0 a4 62 6f 6f 6c c2 a5 61 72 72 61 79 92 c3 c3 a4 64 69 63 74 82 a4 74 65 73 74 a4 74 65 73 74 a5 74 65 73 74 32 02
 """
 ```
 

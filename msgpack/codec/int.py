@@ -1,5 +1,6 @@
 import struct
 
+from msgpack.core.base import Payload
 from msgpack.core.limitations import MIN_INT_OBJ_VALUE, MAX_INT_OBJ_VALUE
 from msgpack.core.exceptions import IntOutOfRange
 
@@ -118,3 +119,92 @@ class Encoder:
 
     def get_payload(self) -> bytes:
         return self.payload
+
+
+class Decoder:
+    """Int Decoder
+    
+    Int format family stores an integer in 1, 2, 3, 5, or 9 bytes.
+
+    positive fixint stores 7-bit positive integer
+    +--------+
+    |0XXXXXXX|
+    +--------+
+
+    negative fixint stores 5-bit negative integer
+    +--------+
+    |111YYYYY|
+    +--------+
+
+    * 0XXXXXXX is 8-bit unsigned integer
+    * 111YYYYY is 8-bit signed integer
+
+    uint 8 stores a 8-bit unsigned integer
+    +--------+--------+
+    |  0xcc  |ZZZZZZZZ|
+    +--------+--------+
+
+    uint 16 stores a 16-bit big-endian unsigned integer
+    +--------+--------+--------+
+    |  0xcd  |ZZZZZZZZ|ZZZZZZZZ|
+    +--------+--------+--------+
+
+    uint 32 stores a 32-bit big-endian unsigned integer
+    +--------+--------+--------+--------+--------+
+    |  0xce  |ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|
+    +--------+--------+--------+--------+--------+
+
+    uint 64 stores a 64-bit big-endian unsigned integer
+    +--------+--------+--------+--------+--------+--------+--------+--------+--------+
+    |  0xcf  |ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|
+    +--------+--------+--------+--------+--------+--------+--------+--------+--------+
+
+    int 8 stores a 8-bit signed integer
+    +--------+--------+
+    |  0xd0  |ZZZZZZZZ|
+    +--------+--------+
+
+    int 16 stores a 16-bit big-endian signed integer
+    +--------+--------+--------+
+    |  0xd1  |ZZZZZZZZ|ZZZZZZZZ|
+    +--------+--------+--------+
+
+    int 32 stores a 32-bit big-endian signed integer
+    +--------+--------+--------+--------+--------+
+    |  0xd2  |ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|
+    +--------+--------+--------+--------+--------+
+
+    int 64 stores a 64-bit big-endian signed integer
+    +--------+--------+--------+--------+--------+--------+--------+--------+--------+
+    |  0xd3  |ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|ZZZZZZZZ|
+    +--------+--------+--------+--------+--------+--------+--------+--------+--------+
+    """
+
+    def __init__(self):
+        self.elem = None
+
+    def decode(self, first_byte: bytes, payload: Payload):
+        self.elem = None
+        if 0x00 <= first_byte <= 0x7f:
+            self.elem = first_byte
+        elif 0xe0 <= first_byte <= 0xff:
+            self.elem = first_byte - 0x100
+        elif first_byte == 0xd0:
+            self.elem = struct.unpack(">b", payload.byte())[0]
+        elif first_byte == 0xcc:
+            self.elem = struct.unpack(">B", payload.byte())[0]
+        elif first_byte == 0xd1:
+            self.elem = struct.unpack(">h", payload.bytes(2))[0]
+        elif first_byte == 0xcd:
+            self.elem = struct.unpack(">H", payload.bytes(2))[0]
+        elif first_byte == 0xd2:
+            self.elem = struct.unpack(">i", payload.bytes(4))[0]
+        elif first_byte == 0xce:
+            self.elem = struct.unpack(">I", payload.bytes(4))[0]
+        elif first_byte == 0xd3:
+            self.elem = struct.unpack(">q", payload.bytes(8))[0]
+        elif first_byte == 0xcf:
+            self.elem = struct.unpack(">Q", payload.bytes(8))[0]
+
+    def get_elem(self) -> int:
+        return self.elem
