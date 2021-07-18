@@ -1,0 +1,12 @@
+{
+    "str": "1",
+    "float": 1.1,
+    "int": -1,
+    "None": null,
+    "bool": false,
+    "array": [true, true],
+    "dict": {
+        "test": "test",
+        "test2": 2
+    }
+}
