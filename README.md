@@ -70,6 +70,8 @@ TimestampStruct(datetime.strptime("2021/07/17 22:30:45.123456+00:00", "%Y/%m/%d 
 
 ### File
 
+> Note: File didn't support byte and extension types.
+
 example.json  
 
 ```json
@@ -150,7 +152,8 @@ coverage test:
 
 ### Slow test
 
-> include large element test
+> include large element test  
+> Note: This test very slowly and possibly occurs `Memory Error`
 
 `$ pytest --runslow`  
 
